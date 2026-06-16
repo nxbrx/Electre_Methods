@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../api'
 import { Button, Box, Typography } from '@mui/material'
 import MatrixEditor from '../components/MatrixEditor'
 import ParamInputs from '../components/ParamInputs'
@@ -22,7 +22,7 @@ export default function ElectreIIPage() {
   const callSolve = async () => {
     const perf = matrix.map(r => r.map(vv => parseFloat(vv || '0')))
     const body = { performance: perf, weights: weights.map(x => parseFloat(x || '0')), eii_cp: parseFloat(eiiParams.eii_cp), eii_c: parseFloat(eiiParams.eii_c), eii_cm: parseFloat(eiiParams.eii_cm), eii_d1: parseFloat(eiiParams.eii_d1), eii_d2: parseFloat(eiiParams.eii_d2), maximum_cycles: parseInt(eiiParams.maximum_cycles) }
-    const res = await axios.post('/electre/ii', body)
+        const res = await api.post('/electre/ii', body)
     setResult(res.data.result)
     setGraphPayload(body)
   }
@@ -31,7 +31,7 @@ export default function ElectreIIPage() {
     async function fetchRanking() {
       if (!graphPayload || !graphPayload.performance || graphPayload.performance.length === 0) return
       try {
-        const res = await axios.post('/graph/data/ii', graphPayload)
+        const res = await api.post('/graph/data/ii', graphPayload)
         const ranks = res.data.rankings || []
         setCredibilityMatrix(res.data.credibility || null)
         const data = ranks.map(r => ({ alt: r.alt, avg: r.avg ?? r.value ?? null, asc: r.asc, desc: r.desc }))
