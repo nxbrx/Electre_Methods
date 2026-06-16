@@ -10,7 +10,10 @@ from matrix_electre.electre_ii import ELECTRE_II
 from matrix_electre.electre_iii import ELECTRE_III
 from matrix_electre.electre_iv import ELECTRE_IV
 from matrix_electre.electre_tri import ELECTRE_Tri
-from matrix_electre.excel_adapter import ExcelAdapter
+try:
+    from matrix_electre.excel_adapter import ExcelAdapter
+except Exception:
+    ExcelAdapter = None
 from matrix_electre.matrix_operations import MatrixOperations
 from matrix_electre.ranking import Ranking
 
