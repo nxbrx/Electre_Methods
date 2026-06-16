@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import api from '../api'
 import { Button, Box, Typography } from '@mui/material'
 import MatrixEditor from '../components/MatrixEditor'
 import ParamInputs from '../components/ParamInputs'
@@ -36,7 +36,7 @@ export default function ElectreTriPage(){
     async function fetchGraph(){
       if(!graphPayload || !graphPayload.x || graphPayload.x.length === 0) return
       try{
-        const res = await axios.post('/graph/data/tri', graphPayload)
+        const res = await api.post('/graph/data/tri', graphPayload)
         const gd = res.data
         const nodes = gd.nodes || []
         // nodes may include position {x,y}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import api from '../api'
 import { Button, Box, Typography } from '@mui/material'
 import MatrixEditor from '../components/MatrixEditor'
 import ParamInputs from '../components/ParamInputs'
@@ -24,7 +24,7 @@ export default function ElectreIIIPage(){
   const callSolve = async () => {
     const perf = matrix.map(r => r.map(vv => parseFloat(vv || '0')))
     const body = { performance: perf, weights: weights.map(x=>parseFloat(x||'0')), p: p.map(x=>parseFloat(x||'0')), q: q.map(x=>parseFloat(x||'0')), v: v.map(x=>parseFloat(x||'0')) }
-    const res = await axios.post('/electre/iii', body)
+        const res = await api.post('/electre/iii', body)
     setResult(res.data.result)
     setGraphPayload(body)
   }
@@ -33,7 +33,7 @@ export default function ElectreIIIPage(){
     async function fetchRanking(){
       if(!graphPayload || !graphPayload.performance || graphPayload.performance.length === 0) return
       try{
-        const res = await axios.post('/graph/data/iii', graphPayload)
+        const res = await api.post('/graph/data/iii', graphPayload)
         const ranks = res.data.rankings || []
         setCredibilityMatrix(res.data.credibility || null)
         const data = ranks.map(r => ({ alt: r.alt, avg: r.avg ?? r.value ?? null }))
