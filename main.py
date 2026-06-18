@@ -4,6 +4,8 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException
 
+from fastapi.middleware.cors import CORSMiddleware
+
 from api_models import (
     ElectreIRequest,
     ElectreISRequest,
@@ -34,6 +36,13 @@ from matrix_electre import (
 
 app = FastAPI(title="J-ELECTRE API", version="0.1")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # O asterisco permite que o localhost e a Vercel acessem
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (POST, GET, OPTIONS)
+    allow_headers=["*"],
+)
 
 def to_numpy_matrix(m: List[List[float]]) -> np.ndarray:
     try:
