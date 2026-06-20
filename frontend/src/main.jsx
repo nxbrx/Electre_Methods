@@ -1,51 +1,51 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { Container, AppBar, Toolbar, Typography, Button } from '@mui/material'
-import ElectreIPage from './pages/ElectreIPage'
-import ElectreISPage from './pages/ElectreISPage'
-import ElectreIVPage from './pages/ElectreIVPage'
+import { BrowserRouter, Routes, Route, Navigate, NavLink } from 'react-router-dom'
+import { ThemeProvider, CssBaseline, Container, AppBar, Toolbar, Typography, Box } from '@mui/material'
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined'
+import theme from './theme'
 import ElectreIIPage from './pages/ElectreIIPage'
-import ElectreIIIPage from './pages/ElectreIIIPage'
-import ElectreTriPage from './pages/ElectreTriPage'
+import AboutPage from './pages/AboutPage'
 
-function App(){
+const navLinkStyle = ({ isActive }) => ({
+  color: '#FFFFFF',
+  opacity: isActive ? 1 : 0.65,
+  textDecoration: 'none',
+  fontWeight: 600,
+  fontSize: '0.95rem',
+  padding: '6px 4px',
+  borderBottom: isActive ? '2px solid #BD8A3F' : '2px solid transparent',
+  transition: 'opacity 0.15s ease',
+})
+
+function App() {
   return (
-    <BrowserRouter>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>J-ELECTRE</Typography>
-          <Button color="inherit" component={Link} to="/ei">EI</Button>
-          <Button color="inherit" component={Link} to="/ei_s">EI_s</Button>
-          <Button color="inherit" component={Link} to="/ei_v">EI_v</Button>
-          <Button color="inherit" component={Link} to="/eii">EII</Button>
-          <Button color="inherit" component={Link} to="/eiii">EIII</Button>
-          <Button color="inherit" component={Link} to="/eiv">EIV</Button>
-          <Button color="inherit" component={Link} to="/etri">ETri</Button>
-        </Toolbar>
-      </AppBar>
-      <Container sx={{ mt: 3 }}>
-        <Routes>
-          <Route path="/" element={<ElectreIPage/>} />
-          <Route path="/i" element={<ElectreIPage/>} />
-          <Route path="/i_s" element={<ElectreISPage/>} />
-          <Route path="/i_v" element={<ElectreIVPage/>} />
-          <Route path="/ii" element={<ElectreIIPage/>} />
-          <Route path="/iii" element={<ElectreIIIPage/>} />
-          <Route path="/iv" element={<ElectreIVPage/>} />
-          <Route path="/tri" element={<ElectreTriPage/>} />
-
-          {/* Keep legacy routes and add 'e' prefixed routes for compatibility */}
-          <Route path="/ei" element={<ElectreIPage/>} />
-          <Route path="/ei_s" element={<ElectreISPage/>} />
-          <Route path="/ei_v" element={<ElectreIVPage/>} />
-          <Route path="/eii" element={<ElectreIIPage/>} />
-          <Route path="/eiii" element={<ElectreIIIPage/>} />
-          <Route path="/eiv" element={<ElectreIVPage/>} />
-          <Route path="/etri" element={<ElectreTriPage/>} />
-        </Routes>
-      </Container>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <AppBar position="sticky" elevation={0}>
+          <Toolbar sx={{ gap: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
+              <TimelineOutlinedIcon sx={{ color: '#BD8A3F' }} />
+              <Typography variant="h6" sx={{ color: '#fff', fontSize: '1.15rem' }}>
+                J-ELECTRE&nbsp;II
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 3 }}>
+              <NavLink to="/" end style={navLinkStyle}>Calculadora</NavLink>
+              <NavLink to="/sobre" style={navLinkStyle}>Sobre o método</NavLink>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
+          <Routes>
+            <Route path="/" element={<ElectreIIPage />} />
+            <Route path="/sobre" element={<AboutPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Container>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
